@@ -18,6 +18,13 @@ class World(object):
         self.agents = []
         self.paused = True
         self.showinfo = True
+        # Cohesion/Sepertion/Alignment Variables ## Added 2018-04-16
+        self.cohesion = 0.0
+        self.seperation = 0.0
+        self.alignment = 0.0
+        self.radius = 10.0
+
+        
 
     def update(self, delta):
         if not self.paused:
@@ -33,9 +40,22 @@ class World(object):
             egi.cross(self.target, 10)
 
         if self.showinfo:
+            # added additional info to info text in regards to emergant group behaviour ##2018-04-16
             infotext = ', '.join(set(agent.mode for agent in self.agents))
             egi.white_pen()
             egi.text_at_pos(0, 0, infotext)
+            infotext = ': '.join(('Cohesion Modifier', str(self.cohesion)))
+            egi.white_pen()
+            egi.text_at_pos(0, 12, infotext)
+            infotext = ': '.join(('Seperation Modifier', str(self.seperation)))
+            egi.white_pen()
+            egi.text_at_pos(0, 24, infotext)
+            infotext = ': '.join(('Alignment Modifier', str(self.alignment)))
+            egi.white_pen()
+            egi.text_at_pos(0, 36, infotext)
+            infotext = ': '.join(('Radius', str(self.radius)))
+            egi.white_pen()
+            egi.text_at_pos(0, 48, infotext)
 
     def wrap_around(self, pos):
         ''' Treat world as a toroidal space. Updates parameter object pos '''

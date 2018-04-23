@@ -18,7 +18,8 @@ AGENT_MODES = {
     KEY._5: 'flee',
     KEY._6: 'pursuit',
     KEY._7: 'follow_path',
-    KEY._8: 'wander'
+    KEY._8: 'wander',
+    KEY._9: 'neigbourhood',
 }
 
 
@@ -67,6 +68,8 @@ class Agent(object):
         self.wander_jitter = 1.0 * scale
         self.bRadius = scale
 
+        # If Tagged is true, We are part of a neighbourhood
+        self.tagged = False
 
         # data for drawing this agent
         self.color = 'ORANGE'
@@ -109,6 +112,13 @@ class Agent(object):
             force = self.follow_path()
         elif mode == 'wander':
             force = self.wander(delta)
+        elif mode == 'neigbourhood':
+            self.find_neighbours(self.world.agents, self.world.radius)
+            force = self.wander(delta)
+            force += self.seperation(self.world.agents) * self.world.seperation
+            force += self.cohesion(self.world.agents) * self.world.cohesion
+            force += self.alignment(self.world.agents) * self.world.alignment
+
         else:
             force = Vector2D()
         force.truncate(self.max_force)
@@ -127,7 +137,7 @@ class Agent(object):
         # update position
         self.pos += self.vel * delta
         # update heading is non-zero velocity (moving)
-        if self.vel.lengthSq() > 0.00000001:
+        if self.vel.length_sq() > 0.00000001:
             self.heading = self.vel.get_normalised()
             self.side = self.heading.perp()
         # treat world as continuous space - wrap new position if needed
@@ -157,6 +167,12 @@ class Agent(object):
             wnd_pos = (self.wander_target + Vector2D(self.wander_dist, 0))
             wld_pos = self.world.transform_point(wnd_pos, self.pos, self.heading, self.side)
             egi.circle(wld_pos, 3)
+
+        if self.mode == 'neigbourhood':
+            if self.tagged == True:
+                self.color = 'BLUE'
+            if self.tagged == False:
+                self.color = 'ORANGE'
     
     def speed(self):
         return self.vel.length()
@@ -240,3 +256,64 @@ class Agent(object):
         wld_target = self.world.transform_point(target, self.pos, self.heading, self.side)
         # and steer towards it
         return self.seek(wld_target)
+
+    def find_neighbours(self, bots, radius):
+        for bot in bots:
+            bot.tagged = False
+            # get distance between self.pos and bot.pos
+            dis = Vector2D.distance_sq(self.pos, bot.pos)
+            if dis < (radius + bot.bRadius)** 2:
+                bot.tagged = True
+
+    def alignment(self, group):
+        avgHeading = Vector2D()
+        avgCount = 0
+        
+        for agent in group:
+            if self != agent and agent.tagged:
+                avgHeading += agent.pos
+                avgCount += 1
+                
+        if avgCount > 0:
+            avgHeading /= float(avgCount)
+            avgHeading -= self.heading
+        return avgHeading
+
+    def cohesion(self, group):
+        """
+        This returns a steering force towards the center of the group
+        """
+        centerMass = Vector2D()
+        steeringForce = Vector2D()
+        avgCount = 0
+
+        for agent in group:
+            if self != agent and self.tagged:
+                centerMass += agent.pos
+                avgCount += 1
+        
+        if avgCount > 0:
+            centerMass /= float(avgCount)
+            steeringForce += self.seek(centerMass)
+
+        return steeringForce
+
+    def seperation(self, group):
+        """
+        This returns a steering force away from the center of the group
+        """
+        centerMass = Vector2D()
+        steeringForce = Vector2D()
+        avgCount = 0
+
+        for agent in group:
+            if self != agent and self.tagged:
+                centerMass += agent.pos
+                avgCount += 1
+        
+        if avgCount > 0:
+            centerMass /= float(avgCount)
+            steeringForce += self.flee(centerMass)
+
+        return steeringForce
+        
