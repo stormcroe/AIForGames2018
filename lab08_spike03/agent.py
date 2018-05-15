@@ -20,6 +20,7 @@ AGENT_MODES = {
     KEY._7: 'follow_path',
     KEY._8: 'wander',
     KEY._9: 'neigbourhood',
+    KEY._0: 'hide' #used in spike 8 by the prey agent
 }
 
 
@@ -121,6 +122,9 @@ class Agent(object):
 
         else:
             force = Vector2D()
+
+        force += self.avoidObjects(self.world.hideObjects)
+
         force.truncate(self.max_force)
         accel = Vector2D(force.x / self.mass, force.y / self.mass)
         self.acceleration = accel
@@ -316,4 +320,11 @@ class Agent(object):
             steeringForce += self.flee(centerMass)
 
         return steeringForce
-        
+
+    def avoidObjects(self, hideObjs):
+        '''Used to avoid the hide objs by all versions of the agent
+            Currently not working due to not being part of the spike work, expected to extend later
+        '''
+        steeringForce = Vector2D()
+
+        return steeringForce

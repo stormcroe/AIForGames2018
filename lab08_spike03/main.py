@@ -11,6 +11,9 @@ from pyglet.gl import *
 from vector2d import Vector2D
 from world import World
 from agent import Agent, AGENT_MODES  # Agent with seek, arrive, flee and pursuit
+from hunter import Hunter
+from prey import Prey
+from hideObject import HideObject
 
 
 def on_mouse_release(x, y, button, modifiers):
@@ -31,6 +34,9 @@ def on_key_press(symbol, modifiers):
         # Reset to Default Values on limits, Randomise the Path of each agent
         for agent in world.agents:
             agent.reinit()
+        # Also Reset the Hiding Spots in world
+        for hide in world.hideObjects:
+            hide.reinit(world)
     elif symbol == KEY.L: # 09/04/18
         # Toggle Path Looping on all agents
         for agent in world.agents: 
@@ -124,7 +130,12 @@ if __name__ == '__main__':
     # create a world for agents
     world = World(500, 500)
     # add one agent
-    world.agents.append(Agent(world))
+    world.hunter = Hunter(world)
+    world.agents.append(Prey(world))
+    # add HideObjects
+    for _ in range(5):
+        obj = HideObject(world)
+        world.hideObjects.append(obj)
     # unpause the world ready for movement
     world.paused = False
 

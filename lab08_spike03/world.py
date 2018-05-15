@@ -16,6 +16,7 @@ class World(object):
         self.target = Vector2D(cx / 2, cy / 2)
         self.hunter = None
         self.agents = []
+        self.hideObjects = []
         self.paused = True
         self.showinfo = True
         # Cohesion/Sepertion/Alignment Variables ## Added 2018-04-16
@@ -28,13 +29,18 @@ class World(object):
 
     def update(self, delta):
         if not self.paused:
+            if self.hunter is not None:
+                self.hunter.update(delta)
             for agent in self.agents:
                 agent.update(delta)
 
     def render(self):
+        if self.hunter is not None:
+            self.hunter.render()
         for agent in self.agents:
             agent.render()
-
+        for hide in self.hideObjects:
+            hide.render()
         if self.target:
             egi.red_pen()
             egi.cross(self.target, 10)
