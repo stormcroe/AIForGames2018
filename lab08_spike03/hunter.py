@@ -38,13 +38,13 @@ class Hunter(Agent):
         self.bRadius = scale
 
         #Pursuit Info
-        self.radius = self.world.radius + 10
+        self.radius = 200
 
         # If Tagged is true, We are part of a neighbourhood
         self.tagged = False
 
         # data for drawing this agent
-        self.show_info = False
+        self.show_info = True
         self.color = 'RED'
         self.vehicle_shape = [
             Point2D(-1.0,  0.7),
