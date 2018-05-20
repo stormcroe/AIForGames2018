@@ -90,7 +90,7 @@ class BoxWorldWindow(pyglet.window.Window):
                 label.y = cy-20
 
         @self.event
-        def on_mouse_press(x, y, button, modifiers):
+        def on_mouse_release(x, y, button, modifiers):
             if button == 1: # left
                 box = self.world.get_box_by_pos(x,y)
                 if box:
