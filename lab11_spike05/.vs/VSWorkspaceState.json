@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\bots",
+    "\\logs"
   ],
-  "SelectedNode": "\\main.py",
   "PreviewInSolutionExplorer": false
 }
