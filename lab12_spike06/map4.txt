@@ -1,0 +1,23 @@
+20 20
+2 399
+
+X m m m m m m m m m m m m m m m m m m m
+X m m . . . . . . . X m m m m m m m m m
+X m m . ~ ~ ~ m m m X m m m m m m m m m
+X m m . ~ ~ ~ m m m X m m m m m m m m m
+X m m . ~ ~ ~ m m m X m m m m m m m m m
+X m m . ~ ~ ~ m m m X m m m m m m m m m
+X m m . ~ ~ ~ m m m X X X X X X X X m m
+X m m . . . . . m m m m m m m m m m m m
+X m m m m m m m m m m m m m m m m m m m
+X X X X X X X X m m ~ ~ ~ m m m m m m m
+X m m m m m m m m m ~ ~ ~ m m m m m m m
+X m m m m m m m m m ~ ~ ~ m m m m m m m
+X m m m m m m m m m m m m m m m m m m m
+X m m m m m m m m m m m m m m m m m m m
+X m m m m m m m m m m m m m m m m m m m
+X X X X X X m m ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+X m m m m X m m ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+X m m m m X m m ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+X m m m m m m m ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+X m m m m m m m ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
